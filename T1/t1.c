@@ -39,8 +39,8 @@ void ler_alunos(int *matriculas, char nomes[][50], int *n) {
 }
 
 void media(float * medias) { // erro na funçao medias encontrado, passa float mais tinha na versao anterior int como parametro
-	int i = 0;
-	float n1, n2;
+	int i = 0, matricula;
+	float n1=0, n2=0;
 
 	FILE *arq;
 	arq = fopen("notas.txt", "r");
@@ -50,7 +50,7 @@ void media(float * medias) { // erro na funçao medias encontrado, passa float m
 	}
 
 	while (feof(arq) == 0) { // copia as notas do  arquivo para n1 e n2
-		if (fscanf(arq, "%f %f ", &n1, &n2)<=0) {
+		if (fscanf(arq, " %d %f %f ",&matricula, &n1, &n2)<=0) {
 			break;
 		}
 
