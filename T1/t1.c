@@ -21,15 +21,16 @@ void ler_alunos(int *matriculas, char nomes[][50], int *n) {
 		i=0;
 		while (caracter != '\n' && feof(arq) == 0) { //enquanto nao passar de linha, no caso \n, ele continua copiando a primeira linha no nome[i]
 			nome[i] = caracter; // passa o caracter ja existente 
-			caracter = fgetc(arq); //vai copiando
+			caracter = fgetc(arq); //vai copiando os restantes do caracter da coluna
 			/**/ i++;
 		}
 
 		//ate aqui esta certo
+		//erro desta parte resolvido
 
-		nome[i] = '\0';
-		matriculas[j] = matricula;
-		strcpy(nomes[j], nome);
+		nome[i] = '\0'; // acrescenta um \0 ao final da string lida acima
+		matriculas[j] = matricula; // coloca a matricula salva no primeiro while para matriculas[j]
+		strcpy(nomes[j], nome); //copia o nome para o vetor que armazena a string
 		/**/ j++;
 	}
 
@@ -37,8 +38,8 @@ void ler_alunos(int *matriculas, char nomes[][50], int *n) {
 	*n = j;
 }
 
-void media(int * medias) {
-	int matricula, i = 0;
+void media(float * medias) { // erro na funçao medias encontrado, passa float mais tinha na versao anterior int como parametro
+	int i = 0;
 	float n1, n2;
 
 	FILE *arq;
@@ -48,8 +49,8 @@ void media(int * medias) {
 		printf("Erro ao abrir um dos arquivos."); return;
 	}
 
-	while (feof(arq) == 0) {
-		if (fscanf(arq, "%d %f %f ", &matricula, &n1, &n2)<=0) {
+	while (feof(arq) == 0) { // copia as notas do  arquivo para n1 e n2
+		if (fscanf(arq, "%f %f ", &n1, &n2)<=0) {
 			break;
 		}
 
@@ -74,7 +75,7 @@ void main (int argc, char ** argv) {
 	media(medias);
 	for (i = 0; i < linha; i++) {
 		if (strstr(nomes[i], nome) != NULL) {
-			printf("Aluno %s(%d) tem média: %f\n", nomes[i], matriculas[i], medias[i]);
+			printf("Aluno%s (%d) tem média: %.3f\n", nomes[i], matriculas[i], medias[i]);
 		}
 	}
 }
