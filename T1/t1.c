@@ -1,29 +1,31 @@
 #include <stdio.h>
 #include <string.h>
 
-void ler_alunos(int * matriculas, char nomes[][50], int * n) {
+void ler_alunos(int *matriculas, char nomes[][50], int *n) {
 	int matricula, i = 0, j = 0;
 	char caracter, nome[50];
 
 	FILE *arq;
 	arq = fopen("alunos.txt", "r");
 
-	if (arq == NULL) {
+	if (arq == NULL) { // impede que seja lido, caso nao tenha nada no arquivo
 		printf("Erro ao abrir um dos arquivos."); return;
 	}
 
-	while (feof(arq) == 0) {
+	while (feof(arq) == 0) { //funçao feof indica o final de um arquivo , retorna 0 se nao chegou ao fim
 		if (fscanf(arq, "%d", &matricula)<=0) {
 			break;
 		}
 
-		caracter = fgetc(arq);
-
-		while (caracter != '\n') {
-			nome[i] = caracter;
-			caracter = fgetc(arq);
+		caracter = fgetc(arq); // copia para a variavel do tipo char caracter o primeiro caracter da primeira linha do arquivo
+		i=0;
+		while (caracter != '\n' && feof(arq) == 0) { //enquanto nao passar de linha, no caso \n, ele continua copiando a primeira linha no nome[i]
+			nome[i] = caracter; // passa o caracter ja existente 
+			caracter = fgetc(arq); //vai copiando
 			/**/ i++;
 		}
+
+		//ate aqui esta certo
 
 		nome[i] = '\0';
 		matriculas[j] = matricula;
@@ -35,8 +37,8 @@ void ler_alunos(int * matriculas, char nomes[][50], int * n) {
 	*n = j;
 }
 
-float media(int * matricula) {
-	int media;
+void media(int * medias) {
+	int matricula, i = 0;
 	float n1, n2;
 
 	FILE *arq;
@@ -46,37 +48,33 @@ float media(int * matricula) {
 		printf("Erro ao abrir um dos arquivos."); return;
 	}
 
-	while (feof(arq) != 0) {
-		if (fscanf(arq, "%d", &media)) {
+	while (feof(arq) == 0) {
+		if (fscanf(arq, "%d %f %f ", &matricula, &n1, &n2)<=0) {
 			break;
 		}
 
-		if (media == *matricula) {
-			if (fscanf(arq, "%f %f", &n1, &n2)) {
-				return (n1 + n2) / 2;
-			}
-		}
+		medias[i] = (n1+n2)/2;
+		i++;
 	}
 
-	return 0.0;
+	fclose(arq);
 }
 
 void main (int argc, char ** argv) {
 
-	int matriculas[50], matricula, linhas, linha, i;
-	char nomes[50][64], nome[64], caracter;
+	int matriculas[50],linha, i;
+	char nomes[50][50], nome[64], caracter;
+	float medias[50];
 
 	if (argc > 1) {
-		printf("Você deve definir um nome de aluno como parâmetro."); return;
+		strcpy(nome , argv[1]);
 	}
 
-	ler_alunos(matriculas, nomes, linhas);
-
-	for (i = 0; i <= linhas; i++) {
-		if (strcmp(nomes[i], nome) >= 0) {
-			matricula = matriculas[i];
-			nome = nomes[i];
-			printf("Aluno %s(%d) tem média: %f", nome, matricula, media(matricula));
+	ler_alunos(matriculas, nomes, &linha);
+	media(medias);
+	for (i = 0; i < linha; i++) {
+		if (strstr(nomes[i], nome) != NULL) {
+			printf("Aluno %s(%d) tem média: %f\n", nomes[i], matriculas[i], medias[i]);
 		}
 	}
 }
