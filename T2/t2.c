@@ -89,3 +89,4 @@ void main (int argc, char ** argv) {
 	free (nome);
 	free (medias)
 }
+
