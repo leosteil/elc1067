@@ -63,14 +63,9 @@ void media(float * medias) { // erro na funçao medias encontrado, passa float m
 
 void main (int argc, char ** argv) {
 
-	int *matriculas,linha, i;
-	char **nomes, *nome;
-	float *medias;
-
-	matriculas = (int*) malloc(50*sizeof(int));
-	nomes = (char**) malloc(50*sizeof(char*));
-	nome = (char*) malloc (50*sizeof(char));
-	medias = (int*) malloc (50*sizeof(int));
+	int matriculas[50],linha, i;
+	char nomes[50][50], nome[64], caracter;
+	float medias[50];
 
 	if (argc > 1) {
 		strcpy(nome , argv[1]);
@@ -83,9 +78,4 @@ void main (int argc, char ** argv) {
 			printf("Aluno%s (%d) tem média: %.3f\n", nomes[i], matriculas[i], medias[i]);
 		}
 	}
-
-	free (matricula);
-	free (nomes);
-	free (nome);
-	free (medias)
 }
