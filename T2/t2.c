@@ -21,6 +21,7 @@ void ler_alunos(int *matriculas, char **nomes, int *n) {
 		caracter = fgetc(arq); // copia para a variavel do tipo char caracter o primeiro caracter da primeira linha do arquivo
 		i=0;
 		while (caracter != '\n' && feof(arq) == 0) { //enquanto nao passar de linha, no caso \n, ele continua copiando a primeira linha no nome[i]
+			printf("1\n");
 			nome[i] = caracter; // passa o caracter ja existente 
 			caracter = fgetc(arq); //vai copiando os restantes do caracter da coluna
 			/**/ i++;
@@ -29,9 +30,14 @@ void ler_alunos(int *matriculas, char **nomes, int *n) {
 		//ate aqui esta certo
 		//erro desta parte resolvido
 
+		printf("2\n");
 		nome[i] = '\0'; // acrescenta um \0 ao final da string lida acima
+		printf("3\n");
 		matriculas[j] = matricula; // coloca a matricula salva no primeiro while para matriculas[j]
-		strcpy(nomes[j], nome); //copia o nome para o vetor que armazena a string
+		printf("4\n");
+		nomes[j]= (char*) malloc ((strlen(nome)+1)* sizeof(char));
+		strcpy(nomes[j], nome); //copia o nome para o vetor que armazena a string //ERRO AQUI !!!!!!!!!!!!!!!!!!!!
+		printf("5\n");
 		/**/ j++;
 	}
 
@@ -64,7 +70,7 @@ void media(float * medias) { // erro na funçao medias encontrado, passa float m
 
 void main (int argc, char ** argv) {
 
-	int *matriculas,linha, i;
+	int *matriculas,linha, i, n;
 	char **nomes, *nome;
 	float *medias;
 
@@ -86,7 +92,10 @@ void main (int argc, char ** argv) {
 	}
 
 	free (matriculas);
-	free (nomes);
+	
+	for(i=0; i<n; i++)
+		free(nomes[i]);
+
 	free (nome);
 	free (medias);
 };
