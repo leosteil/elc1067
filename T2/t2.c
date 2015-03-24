@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
-void ler_alunos(int *matriculas, char nomes[][50], int *n) {
+void ler_alunos(int *matriculas, char **nomes, int *n) {
 	int matricula, i = 0, j = 0;
 	char caracter, nome[50];
 
@@ -70,7 +71,7 @@ void main (int argc, char ** argv) {
 	matriculas = (int*) malloc(50*sizeof(int));
 	nomes = (char**) malloc(50*sizeof(char*));
 	nome = (char*) malloc (50*sizeof(char));
-	medias = (int*) malloc (50*sizeof(int));
+	medias = (float*) malloc (50*sizeof(float));
 
 	if (argc > 1) {
 		strcpy(nome , argv[1]);
@@ -84,9 +85,9 @@ void main (int argc, char ** argv) {
 		}
 	}
 
-	free (matricula);
+	free (matriculas);
 	free (nomes);
 	free (nome);
-	free (medias)
-}
+	free (medias);
+};
 
