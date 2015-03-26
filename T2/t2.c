@@ -65,6 +65,18 @@ void ler_notas_e_media(int * matriculasNotas,float *notas) { // erro na funçao 
 	fclose(arq);
 }
 
+void verifica_matricula_e_printa(int *matriculasNotas, int *matriculasAluno, char *nome, char **nomes, float *medias, int *linha){
+	int i, j;
+    for(i = 0; i < *linha; i++){
+        j = 0;
+        if(strstr(nomes[i], nome) != NULL){
+            while(matriculasAluno[i] != matriculasNotas[j] && matriculasNotas[j]>0)
+                j++;
+            printf("%.2f %s\n", medias[j], nomes[i]);
+        }
+    }
+}
+
 void main (int argc, char ** argv) {
 
 	int *matAlunos, *matNotas,linha =0 , i, n;
@@ -83,11 +95,13 @@ void main (int argc, char ** argv) {
 
 	ler_alunos(matAlunos, nomes, &linha);
 	ler_notas_e_media(matNotas, medias);
-	for (i = 0; i < linha; i++) {
+	verifica_matricula_e_printa(matNotas, matAlunos, nome, nomes, medias, &linha);
+
+	/*for (i = 0; i < linha; i++) {
 		if (strstr(nomes[i], nome) != NULL) {
 			printf("%s %.3f\n", nomes[i], medias[i]);
 		}
-	}
+	}*/
 
 	free (matAlunos);
 	free (matNotas);
