@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-void ler_alunos(int *matriculas, char **nomes, int *n) {
+void ler_alunos(int *matriculasAluno, char **nomes, int *n) {
 	int matricula, i = 0, j = 0;
 	char caracter, nome[50];
 
@@ -31,7 +31,7 @@ void ler_alunos(int *matriculas, char **nomes, int *n) {
 		//erro desta parte resolvido
 
 		nome[i] = '\0'; // acrescenta um \0 ao final da string lida acima
-		matriculas[j] = matricula; // coloca a matricula salva no primeiro while para matriculas[j]
+		matriculasAluno[j] = matricula; // coloca a matricula salva no primeiro while para matriculas[j]
 		nomes[j]= (char*) malloc ((strlen(nome)+1)* sizeof(char));
 		strcpy(nomes[j], nome); //copia o nome para o vetor que armazena a string //ERRO AQUI !!!!!!!!!!!!!!!!!!!!
 		/**/ j++;
@@ -41,7 +41,7 @@ void ler_alunos(int *matriculas, char **nomes, int *n) {
 	*n = j;
 }
 
-void media(float * medias) { // erro na funçao medias encontrado, passa float mais tinha na versao anterior int como parametro
+void ler_notas_e_media(int * matriculasNotas,float *notas) { // erro na funçao medias encontrado, passa float mais tinha na versao anterior int como parametro
 	int i = 0, matricula;
 	float n1=0, n2=0;
 
@@ -57,7 +57,8 @@ void media(float * medias) { // erro na funçao medias encontrado, passa float m
 			break;
 		}
 
-		medias[i] = (n1+n2)/2;
+		matriculasNotas[i] = matricula;
+		notas[i] = (n1+n2)/2;
 		i++;
 	}
 
@@ -66,11 +67,12 @@ void media(float * medias) { // erro na funçao medias encontrado, passa float m
 
 void main (int argc, char ** argv) {
 
-	int *matriculas,linha =0 , i, n;
+	int *matAlunos, *matNotas,linha =0 , i, n;
 	char **nomes, *nome;
 	float *medias;
 
-	matriculas = (int*) malloc(50*sizeof(int));
+	matAlunos = (int*) malloc(50*sizeof(int));
+	matNotas = (int*) malloc(50*sizeof(int));
 	nomes = (char**) malloc(50*sizeof(char*));
 	nome = (char*) malloc (50*sizeof(char));
 	medias = (float*) malloc (50*sizeof(float));
@@ -79,15 +81,16 @@ void main (int argc, char ** argv) {
 		strcpy(nome , argv[1]);
 	}
 
-	ler_alunos(matriculas, nomes, &linha);
-	media(medias);
+	ler_alunos(matAlunos, nomes, &linha);
+	ler_notas_e_media(matNotas, medias);
 	for (i = 0; i < linha; i++) {
 		if (strstr(nomes[i], nome) != NULL) {
 			printf("%s %.3f\n", nomes[i], medias[i]);
 		}
 	}
 
-	free (matriculas);
+	free (matAlunos);
+	free (matNotas);
 	
 	for(i=0; i<n; i++)
 		free(nomes[i]);
