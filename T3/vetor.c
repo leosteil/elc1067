@@ -51,7 +51,7 @@ vetor_t* vetor_cria(void)
 	/* TODO aqui */
 	int i;
 
-	vet -> baralho = (carta*)memo_aloca(tam*sizeof(carta));
+	vet -> baralho = (carta*)memo_aloca(tam*sizeof(carta)); // vetor de cartas
 
 	for(i=0; i<tam; i++0){
 		vet -> baralho[i] = NULL; // = NULL para evitar erros	
@@ -63,12 +63,21 @@ vetor_t* vetor_cria(void)
 void vetor_destroi(vetor_t* vet)
 {
 	/* TODO aqui */
+	memo_libera(vet -> baralho);
 	memo_libera(vet);	
 }
 
 int vetor_numelem(vetor_t *vet)
 {
 	/* TODO aqui */
+	/*int i=0;
+
+	for(i=0; i<tam; i++){
+		if(vet != NULL){
+			n = n+1;
+		}
+	}*/
+
 	return vet->n;
 }
 
