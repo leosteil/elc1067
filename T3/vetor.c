@@ -34,12 +34,9 @@
 #include "carta.h"
 #include "memo.h"
 
-#define tam 50;
+const int tam  = 50;
 
 struct vetor {
-	/* TODO aqui */
-	/* defina os campos da TAD vetor aqui */
-
 	carta* baralho;   /* baralho - vetor de cartas */
 	int n;		/* número de cartas */
 };
@@ -63,7 +60,13 @@ vetor_t* vetor_cria(void)
 void vetor_destroi(vetor_t* vet)
 {
 	/* TODO aqui */
-	memo_libera(vet -> baralho);
+
+	int i;
+
+	for(i =0; i<tam ; i++){
+		memo_libera(vet -> baralho);
+	}
+		
 	memo_libera(vet);	
 }
 
@@ -83,7 +86,9 @@ int vetor_numelem(vetor_t *vet)
 
 void vetor_insere_carta(vetor_t *vet, int indice, carta c)
 {
-	/* TODO aqui */
+	int i =0;
+	
+	
 	vet->n++;
 }
 
