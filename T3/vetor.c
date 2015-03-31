@@ -38,7 +38,7 @@ const int tam  = 50;
 
 struct vetor {
 	carta* baralho;   /* baralho - vetor de cartas */
-	int n;		/* número de cartas */
+	int n, aux;		/* número de cartas */
 };
 
 vetor_t* vetor_cria(void)
@@ -71,6 +71,11 @@ void vetor_destroi(vetor_t* vet)
 
 int vetor_numelem(vetor_t *vet)
 {
+	int i;
+	while(vet->baralho[i] == NULL){
+		vet-> n++;
+		i++;
+	}
 	return vet->n;
 }
 
@@ -78,34 +83,40 @@ void vetor_insere_carta(vetor_t *vet, int indice, carta c)
 {	
 	int i=0;
 
-	/*if (indice > vet-> n){
-		memo_realoca(vet->baralho, vet->n + 1);
-	}*/
+	if (indice > vet-> n){
+		memo_realoca(vet->baralho,vet->n + 1);
+	}
 
 	if(vet->baralho[indice] == NULL){
+		vet -> baralho[indice] = c;
+	}else{
 		for (i=vet->n; i>=indice; i--){
 			vet -> baralho[i] = vet->baralho[i-1];
 		}
+		vet->baralho[indice] = c;
 	}	
 	
-	vet->baralho[indice] = c;
+	vet -> n++;
+
 }
 
 carta vetor_remove_carta(vetor_t *vet, int indice)
 {
-	carta aux; // estrutura auxiliar que recebe a carta no indice recebido
-	aux = vet->baralho[indice];
-	
-	int aux1 = vet->n; // variavel auxiliar que recebe o numero de cartas
 	int i;
 
-	for(i=indice;i < aux1;i++){
-	  vet->baralho[i] = vet->baralho[i+1];
+	carta aux; // estrutura auxiliar que recebe a carta no indice recebido
+	aux = vet->baralho[indice];
+
+	if(aux==NULL){
+		return NULL;
 	}
 
-	vet->baralho[vet->n]= NULL; // remove a carta
+	for(i=indice;i< vet->n -1;i++){
+		vet->baralho[i] = vet->baralho[i+1];
+	}
 
 	vet->n--;
+	vet->baralho[vet->n]= NULL; // remove a carta
 
 	return aux;
 }
@@ -117,7 +128,11 @@ carta vetor_acessa_carta(vetor_t *vet, int indice)
 }
 
 bool vetor_valido(vetor_t *vet)
-{
-	/* TODO aqui */
-	return true;
+{	
+	if(vet==NULL){
+		return false;
+	}else{
+		return true;
+	}
+
 }
