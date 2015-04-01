@@ -47,7 +47,6 @@ vetor_t* vetor_cria(void)
 	//vet->n = 0;
 	(*vet).n = 0; // mesma coisa
 
-	/* TODO aqui */
 	int i;
 
 	vet -> baralho = (carta*)memo_aloca(tam*sizeof(carta)); // vetor de cartas
@@ -61,8 +60,6 @@ vetor_t* vetor_cria(void)
 
 void vetor_destroi(vetor_t* vet)
 {
-	/* TODO aqui */
-
 	int i;
 
 	memo_libera(vet->baralho);	
@@ -123,7 +120,6 @@ carta vetor_remove_carta(vetor_t *vet, int indice)
 
 carta vetor_acessa_carta(vetor_t *vet, int indice)
 {
-	/* TODO aqui */
 	return vet->baralho[indice];
 }
 
