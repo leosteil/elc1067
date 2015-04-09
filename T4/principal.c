@@ -33,6 +33,8 @@
 #include "jogo.h"
 #include "vetor.h"
 #include "jogo.h"
+#include "fila.h"
+#include "pilha.h" 
 
 
 
@@ -85,6 +87,10 @@ main(int argc, char **argv)
 		switch(tecla){
 			case ' ':
 				monte_para_descarte(solit);
+				break;
+			case 'j':
+				descarte_para_ases(solit);
+				break;
 		}
 	}
 	tela_le(jogo_tela(solit));
