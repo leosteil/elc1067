@@ -32,29 +32,19 @@
 #include "jogo.h"
 #include "vetor.h"
 
-int 
-main(int argc, char **argv)
-{
-	jogo		solit;
-	solit = jogo_cria();
-
-	pilha_insere_carta(jogo_monte(solit), carta_cria(AS, OUROS));
-	pilha_insere_carta(jogo_monte(solit), carta_cria(REI, PAUS));
-	pilha_insere_carta(jogo_monte(solit), carta_cria(DAMA, COPAS));
-	pilha_insere_carta(jogo_monte(solit), carta_cria(2, PAUS));
-	pilha_insere_carta(jogo_monte(solit), carta_cria(10, ESPADAS));
-
-	/*vetor_t* cartas = vetor_cria();*/
-	/*vetor_t* fora_ordem = vetor_cria();*/
+void inicia_jogo(jogo solit){
+	vetor_t* cartas = vetor_cria();
+	vetor_t* fora_ordem = vetor_cria();
+	srand(time(NULL));
 	int i,j;
 	
-	/*for(i=0; i<=3; i++){	// cria as cartas 
+	for(i=0; i<=3; i++){	// cria as cartas 
 		for(j=1; j<=13;j++){
 			vetor_insere_carta(cartas, (i*13)+j-1, carta_cria(i,j));
 		}
 	}
 
-	for (i=0; i<vetor_numelem(cartas);i++){ // embaralhamento das cartas s
+	for (i=0; i<vetor_numelem(cartas);i++){ // embaralhamento das cartas
 		j =  ((int)rand())% vetor_numelem(cartas);
 		carta c = vetor_remove_carta(cartas,j);
 		vetor_insere_carta(fora_ordem,i,c);	
@@ -76,7 +66,22 @@ main(int argc, char **argv)
 	}
 	
 	vetor_destroi(cartas);
-	vetor_destroi(fora_ordem);*/
+	vetor_destroi(fora_ordem);
+}
+
+int 
+main(int argc, char **argv)
+{
+	jogo		solit;
+	solit = jogo_cria();
+
+	inicia_jogo(solit);
+
+	/*pilha_insere_carta(jogo_monte(solit), carta_cria(AS, OUROS));
+	pilha_insere_carta(jogo_monte(solit), carta_cria(REI, PAUS));
+	pilha_insere_carta(jogo_monte(solit), carta_cria(DAMA, COPAS));
+	pilha_insere_carta(jogo_monte(solit), carta_cria(2, PAUS));
+	pilha_insere_carta(jogo_monte(solit), carta_cria(10, ESPADAS));*/
 
 	jogo_desenha(solit);
 	while (!pilha_vazia(jogo_monte(solit))) {
