@@ -32,6 +32,9 @@
 #include "memo.h"
 #include "jogo.h"
 #include "vetor.h"
+#include "jogo.h"
+
+
 
 void inicia_jogo(jogo solit){
 	vetor_t* cartas = vetor_cria();
@@ -74,25 +77,15 @@ main(int argc, char **argv)
 {
 	jogo		solit;
 	solit = jogo_cria();
-
 	inicia_jogo(solit);
-
-	/*pilha_insere_carta(jogo_monte(solit), carta_cria(AS, OUROS));
-	pilha_insere_carta(jogo_monte(solit), carta_cria(REI, PAUS));
-	pilha_insere_carta(jogo_monte(solit), carta_cria(DAMA, COPAS));
-	pilha_insere_carta(jogo_monte(solit), carta_cria(2, PAUS));
-	pilha_insere_carta(jogo_monte(solit), carta_cria(10, ESPADAS));*/
 
 	jogo_desenha(solit);
 	while (!pilha_vazia(jogo_monte(solit))) {
-		carta		c;
-		tela_le(jogo_tela(solit));
-
-		c = pilha_remove_carta(jogo_monte(solit));
-		carta_abre(c);
-		pilha_insere_carta(jogo_pilha(solit, 3), c);
-
-		jogo_desenha(solit);
+		char tecla = tela_le(jogo_tela(solit));
+		switch(tecla){
+			case ' ':
+				monte_para_descarte(solit);
+		}
 	}
 	tela_le(jogo_tela(solit));
 	jogo_destroi(solit);

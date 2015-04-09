@@ -28,6 +28,7 @@
 
 #include "jogo.h"
 #include "memo.h"
+#include "tela.h"
 
 #define SOLIT_MAGICO 0x50717
 #define DESTRUIDO 0x80000000
@@ -127,4 +128,14 @@ jogo_pilha(jogo sol, int i)
 	assert(jogo_valido(sol));
 	assert(i >= 0 && i < 7);
 	return sol->pilhas[i];
+}
+
+void monte_para_descarte (jogo sol){
+	int i;
+	for(i=0;i<2;i++);{
+		carta c = pilha_remove_carta(jogo_monte(sol));
+		carta_abre(c);
+		pilha_insere_carta(jogo_descartes(sol),c);
+		jogo_desenha(sol);
+	}
 }
