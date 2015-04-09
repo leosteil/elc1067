@@ -91,6 +91,11 @@ main(int argc, char **argv)
 			case 'j':
 				descarte_para_ases(solit);
 				break;
+			case 'f':
+				descarte_para_jogo(solit,0);
+				break;
+			case 'k':
+				jogo_para_ases(solit,2);
 		}
 	}
 	tela_le(jogo_tela(solit));
