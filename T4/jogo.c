@@ -28,6 +28,7 @@
 
 #include "jogo.h"
 #include "memo.h"
+#include "tela.h" 
 
 #define SOLIT_MAGICO 0x50717
 #define DESTRUIDO 0x80000000
@@ -147,9 +148,13 @@ void descarte_para_ases(jogo sol){
 	}
 }
 
-void descarte_para_jogo(jogo sol, int ndapilha){ // move as cartas do descarte para as 7 pilhas
+void descarte_para_jogo(jogo sol){ // move as cartas do descarte para as 7 pilhas
+	int ndapilha;
+	printw ("\n Digite o numero da pilha pra a qual deseja mover");
+	ndapilha = tela_le(sol-> tela);
+	ndapilha = ndapilha - 49;
 	pilha p = jogo_pilha(sol,ndapilha);
-	if(pilha_vazia(p)){
+	if(!pilha_vazia(p)){
 		carta c = pilha_remove_carta(jogo_descartes(sol));
 		pilha_insere_carta(p,c);
 		jogo_desenha(sol);
@@ -174,3 +179,17 @@ void ases_para_jogo(jogo sol, int ndapilha){
 		jogo_desenha(sol);
 	}
 }
+
+void jogo_para_jogo(jogo sol){
+	int ndapilha,pilhadestino;
+	printw ("\nDigite qual pilha deseja mover");
+	ndapilha = tela_le(sol->tela);
+	printw ("\nDigite para qual pilha deseja mover");
+	pilhadestino = tela_le(sol->tela);
+	if(!pilha_vazia(p)){
+		carta c = pilha_remove_carta(jogo_pilha(sol,ndapilha));
+		pilha_insere_carta(jogo_pilha(sol,pilhadestino),c);
+		jogo_desenha(sol);
+	}
+}
+

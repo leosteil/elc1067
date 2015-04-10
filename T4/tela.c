@@ -203,3 +203,7 @@ void tela_lelinha(tela t, char *s, int tam)
     cbreak();
     noecho();
 }
+
+void comandos_tela (tela t){
+    printw("\nCOMANDOS : Espaço - Monte-Descarte\nG - Descarte-Jogo\n");
+}

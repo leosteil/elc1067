@@ -35,6 +35,7 @@
 #include "jogo.h"
 #include "fila.h"
 #include "pilha.h" 
+#include "tela.h" 
 
 
 
@@ -84,23 +85,26 @@ main(int argc, char **argv)
 	jogo_desenha(solit);
 	while (!pilha_vazia(jogo_monte(solit))) {
 		char tecla = tela_le(jogo_tela(solit));
+		//comandos_tela(solit->tela);
 		switch(tecla){
 			case ' ':
 				monte_para_descarte(solit);
 				break;
-			case 'j':
+			case 'g':
 				descarte_para_ases(solit);
 				break;
-			case 'f':
-				descarte_para_jogo(solit,0);
+			case 'h':
+				descarte_para_jogo(solit);
 				break;
-			case 'k':
+			case 'j':
 				jogo_para_ases(solit,2);
 				break;
-			case 'l':
+			case 'k':
 				ases_para_jogo(solit,0);
 				break;
-
+			case 'l':
+				jogo_para_jogo(solit);
+				break;
 		}
 	}
 	tela_le(jogo_tela(solit));
