@@ -159,8 +159,18 @@ void descarte_para_jogo(jogo sol, int ndapilha){ // move as cartas do descarte p
 void jogo_para_ases(jogo sol, int ndeases){
 	pilha p = jogo_ases(sol, ndeases);
 	if(pilha_vazia(p)){
-		carta c = pilha_remove_carta(p);
-		pilha_insere_carta(jogo_ases(sol,0),c);
+		carta c = pilha_remove_carta(jogo_pilha(sol,4));
+		pilha_insere_carta(jogo_ases(sol,2),c);
+		carta_abre(c); 
+		jogo_desenha(sol);
+	}
+}
+
+void ases_para_jogo(jogo sol, int ndapilha){
+	pilha p = jogo_pilha(sol, ndapilha);
+	if(!pilha_vazia(p)){
+		carta c = pilha_remove_carta(jogo_ases(sol,0));
+		pilha_insere_carta(jogo_pilha(sol,0),c);
 		jogo_desenha(sol);
 	}
 }
