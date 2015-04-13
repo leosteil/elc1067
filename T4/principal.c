@@ -81,9 +81,10 @@ main(int argc, char **argv)
 	jogo		solit;
 	solit = jogo_cria();
 	inicia_jogo(solit);
+	char tecla;
 
 	jogo_desenha(solit);
-	while (!pilha_vazia(jogo_monte(solit))) {
+	while (!pilha_vazia(jogo_monte(solit)) /*&& tecla != 's'*/) {
 		char tecla = tela_le(jogo_tela(solit));
 		//comandos_tela(solit->tela);
 		switch(tecla){
@@ -108,6 +109,9 @@ main(int argc, char **argv)
 			case 'l':
 				jogo_para_jogo(solit);
 				break;
+			/*case 's':
+				printw("\nVoce fechou o jogo\n");
+				return 0;*/	
 		}
 	}
 	tela_le(jogo_tela(solit));

@@ -131,14 +131,14 @@ jogo_pilha(jogo sol, int i)
 	return sol->pilhas[i];
 }
 
-/*void abre_carta(carta c, pilha p){ // ainda nao utilizada, vai economizar codigo nas funçoes abaixo
-	if(!pilha_vazia(pilha)){
-		carta aux = pilha_remove_carta(p);
-		carta_abre(aux);
-		pilha_insere_carta(p,aux);
-		jogo_desenha(sol);
+void abre_carta(jogo sol, pilha p){ // ainda nao utilizada, vai economizar codigo nas funçoes abaixo
+	if(!pilha_vazia(p)){
+		carta c = pilha_remove_carta(p);
+		carta_abre(c);
+		pilha_insere_carta(p,c);
 	}
-}*/
+	jogo_desenha(sol);
+}
 
 void monte_para_descarte(jogo sol){ // pronta
 	carta c = pilha_remove_carta(jogo_monte(sol));
@@ -251,6 +251,10 @@ void jogo_para_ases(jogo sol){
 		printw("\nDigite uma pilha de 1 a 7");
 		psaida = tela_le(sol->tela);
 		psaida= psaida-49;
+		if(psaida != 0 && psaida != 1 && psaida != 2 && psaida != 3 && psaida != 4 && psaida != 5 && psaida !=6 && psaida != 7){
+			printw("\nJogada Invaida");
+			return;
+		}
 	}	
 
 	printw("\nDigite a pilha de AS onde quer inserir a carta");
@@ -271,12 +275,13 @@ void jogo_para_ases(jogo sol){
 		if(carta_valor(c) == 1){
 			pilha_insere_carta(jogo_ases(sol,npdestino),c);
 			jogo_desenha(sol);
-			if(!pilha_vazia(jogo_pilha(sol,psaida))){
+			/*if(!pilha_vazia(jogo_pilha(sol,psaida))){
 				carta aux = pilha_remove_carta(jogo_pilha(sol,psaida));
 				carta_abre(aux);
 				pilha_insere_carta(jogo_pilha(sol,psaida),aux);
 				jogo_desenha(sol);
-			}
+			}*/
+			abre_carta(sol,jogo_pilha(sol,psaida));
 			return;
 		}else{
 			printw("\nJogada invalida");
