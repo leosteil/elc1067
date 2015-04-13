@@ -190,15 +190,43 @@ void descarte_para_ases(jogo sol){
 }
 
 void descarte_para_jogo(jogo sol){ // move as cartas do descarte para as 7 pilhas
-	int ndapilha;
+	int npdestino;
 	printw ("\n Digite o numero da pilha pra a qual deseja mover");
-	ndapilha = tela_le(sol-> tela);
-	ndapilha = ndapilha - 49;
-	pilha p = jogo_pilha(sol,ndapilha);
+	npdestino = tela_le(sol-> tela);
+	npdestino = npdestino - 49;
+	
+	if(npdestino != 0 && npdestino != 1 && npdestino != 2 && npdestino != 3 && npdestino != 4 && npdestino != 5 && npdestino !=6 && npdestino != 7 ){
+		printw("\nJogada Invalida");
+		tela_atualiza(sol->tela);
+		printw("\nDigite uma pilha de 1 a 7");
+		npdestino = tela_le(sol->tela);
+		npdestino= npdestino-49;
+	}
+
+	pilha p = jogo_pilha(sol,npdestino);
+	carta c = pilha_remove_carta(jogo_descartes(sol));
+
+	if(pilha_vazia(p)){
+		if(carta_valor(c) == 13){ //se for rei insere na pilha vazia
+			pilha_insere_carta(jogo_pilha(sol,npdestino),c);
+			jogo_desenha(sol);
+			return;
+		}else{
+			printw("\nJogada Invalida");
+		}
+	}
+
 	if(!pilha_vazia(p)){
-		carta c = pilha_remove_carta(jogo_descartes(sol));
-		pilha_insere_carta(p,c);
-		jogo_desenha(sol);
+		carta jogo = pilha_remove_carta(jogo_pilha(sol,npdestino)); // carta que esta em uma das 7 pilhas
+		if(carta_valor(c) == carta_valor(jogo)-1 && carta_naipe(c) != carta_naipe(jogo)){	
+			pilha_insere_carta(jogo_pilha(sol,npdestino),jogo);
+			pilha_insere_carta(jogo_pilha(sol,npdestino),c);
+			jogo_desenha(sol);
+		}else{
+			printw("\nJogada Invalida");
+			pilha_insere_carta(jogo_pilha(sol,npdestino),jogo);
+			pilha_insere_carta(jogo_descartes(sol),c);			
+		}
 	}
 }
 
