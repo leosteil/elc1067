@@ -153,8 +153,8 @@ void descarte_para_ases(jogo sol){
 	npdestino = tela_le(sol->tela);
 	npdestino= npdestino-49;
 	tela_atualiza(sol->tela);
-
-	if(npdestino != 1 || npdestino != 2 || npdestino != 3 || npdestino != 4){
+	
+	if(npdestino != 0 && npdestino != 1 && npdestino != 2 && npdestino != 3){
 		printw("\nJogada Invalida");
 		tela_atualiza(sol->tela);
 		printw("\nDigite uma pilha de 1 a 4");
@@ -164,22 +164,29 @@ void descarte_para_ases(jogo sol){
 		
 	pilha p = jogo_ases(sol,npdestino);
 	carta c = pilha_remove_carta(jogo_descartes(sol));
-	if(pilha_vazia(p) && carta_valor(c) == 1){
-		pilha_insere_carta(jogo_ases(sol,npdestino),c);
-		jogo_desenha(sol);
-	}else if(!pilha_vazia(p)){
-		carta c = pilha_remove_carta(jogo_descartes(sol));
-		carta as = pilha_remove_carta(jogo_ases(sol,npdestino)); // carta que esta no monte de as
-		if (carta_valor(c) == carta_valor(as)+1 && carta_naipe(c) == carta_naipe(as)){
-			pilha_insere_carta(jogo_ases(sol,npdestino),as) ;
+
+	if(pilha_vazia(p)){
+		if(carta_valor(c) == 1){
 			pilha_insere_carta(jogo_ases(sol,npdestino),c);
 			jogo_desenha(sol);
+			return;
+		}else{
+			printw ("\nJogada Invalida");
 		}
-	}else{
-		printw("\nJogada invalida");
 	}
-}	
-
+				
+	if(!pilha_vazia(p)){
+		carta as = pilha_remove_carta(jogo_ases(sol,npdestino)); // carta que esta no monte de as
+		if (carta_valor(c) == carta_valor(as)+1 && carta_naipe(c) == carta_naipe(as)){
+			pilha_insere_carta(jogo_ases(sol,npdestino),as);
+			pilha_insere_carta(jogo_ases(sol,npdestino),c);
+			jogo_desenha(sol);
+		}else{
+			printw("\nJogada invalida");
+			pilha_insere_carta(jogo_ases(sol,npdestino),as);
+		}
+	}	
+}
 
 void descarte_para_jogo(jogo sol){ // move as cartas do descarte para as 7 pilhas
 	int ndapilha;
