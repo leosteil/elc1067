@@ -29,6 +29,7 @@
 #include "jogo.h"
 #include "memo.h"
 #include "tela.h" 
+#include "carta.h" 
 
 #define SOLIT_MAGICO 0x50717
 #define DESTRUIDO 0x80000000
@@ -130,23 +131,55 @@ jogo_pilha(jogo sol, int i)
 	return sol->pilhas[i];
 }
 
-void monte_para_descarte(jogo sol){
-
+void monte_para_descarte(jogo sol){ // pronta
 	carta c = pilha_remove_carta(jogo_monte(sol));
 	carta_abre(c);
 	pilha_insere_carta(jogo_descartes(sol),c);
 	jogo_desenha(sol);
 }
 
-void descarte_para_ases(jogo sol){
-	
-	pilha p  = jogo_ases(sol,1);
-	if(pilha_vazia(p)){
-		carta c = pilha_remove_carta(jogo_descartes(sol));
-		pilha_insere_carta(jogo_ases(sol,0),c);
-		jogo_desenha(sol);
+void descarte_para_monte(jogo sol){ //pronta
+    while(!pilha_vazia(jogo_descartes(sol))){
+	carta c = pilha_remove_carta(jogo_descartes(sol));
+	carta_fecha(c);
+	pilha_insere_carta(jogo_monte(sol), c);
+	jogo_desenha(sol);  
 	}
-}
+}	
+
+void descarte_para_ases(jogo sol){
+	int npdestino;
+	//printw("Digite a pilha de destino de AS");
+	npdestino = tela_le(sol->tela);
+	npdestino= npdestino-49;
+	tela_atualiza(sol->tela);
+
+	if(npdestino != 1 || npdestino != 2 || npdestino != 3 || npdestino != 4){
+		printw("\nJogada Invalida");
+		tela_atualiza(sol->tela);
+		printw("\nDigite uma pilha de 1 a 4");
+		npdestino = tela_le(sol->tela);
+		npdestino= npdestino-49;
+	}
+		
+	pilha p = jogo_ases(sol,npdestino);
+	carta c = pilha_remove_carta(jogo_descartes(sol));
+	if(pilha_vazia(p) && carta_valor(c) == 1){
+		pilha_insere_carta(jogo_ases(sol,npdestino),c);
+		jogo_desenha(sol);
+	}else if(!pilha_vazia(p)){
+		carta c = pilha_remove_carta(jogo_descartes(sol));
+		carta as = pilha_remove_carta(jogo_ases(sol,npdestino)); // carta que esta no monte de as
+		if (carta_valor(c) == carta_valor(as)+1 && carta_naipe(c) == carta_naipe(as)){
+			pilha_insere_carta(jogo_ases(sol,npdestino),as) ;
+			pilha_insere_carta(jogo_ases(sol,npdestino),c);
+			jogo_desenha(sol);
+		}
+	}else{
+		printw("\nJogada invalida");
+	}
+}	
+
 
 void descarte_para_jogo(jogo sol){ // move as cartas do descarte para as 7 pilhas
 	int ndapilha;
@@ -161,13 +194,41 @@ void descarte_para_jogo(jogo sol){ // move as cartas do descarte para as 7 pilha
 	}
 }
 
-void jogo_para_ases(jogo sol, int ndeases){
-	pilha p = jogo_ases(sol, ndeases);
-	if(pilha_vazia(p)){
-		carta c = pilha_remove_carta(jogo_pilha(sol,4));
-		pilha_insere_carta(jogo_ases(sol,2),c);
-		carta_abre(c); 
+void jogo_para_ases(jogo sol){
+	int psaida,pdestinoas;
+	printw("\nDigite a pilha de saida");
+	psaida = tela_le(sol->tela);
+	psaida = psaida -49;
+	printw("\nDigite a pilha de AS onde quer inserir a carta");
+	pdestinoas = tela_le(sol->tela);
+	pdestinoas = pdestinoas -49;
+	pilha p = jogo_ases(sol, pdestinoas);
+	carta c = pilha_remove_carta(jogo_pilha(sol,psaida));
+	if(pilha_vazia(p) && carta_valor(c) == 1){
+		pilha_insere_carta(jogo_ases(sol,pdestinoas),c);
 		jogo_desenha(sol);
+		if(!pilha_vazia(jogo_pilha(sol,psaida))){
+			carta aux = pilha_remove_carta(jogo_pilha(sol,psaida));
+			carta_abre(aux);
+			pilha_insere_carta(jogo_pilha(sol,psaida),aux);
+			jogo_desenha(sol);
+		}
+	}else if(!pilha_vazia(p)){
+		carta c = pilha_remove_carta(jogo_descartes(sol));
+		carta as = pilha_remove_carta(jogo_ases(sol,pdestinoas)); // carta que esta no monte de as
+		if (carta_valor(c) == carta_valor(as)+1){
+			pilha_insere_carta(jogo_ases(sol,pdestinoas),as);
+			pilha_insere_carta(jogo_ases(sol,pdestinoas),c);
+			jogo_desenha(sol);
+			if(!pilha_vazia(jogo_pilha(sol,psaida))){
+				carta aux = pilha_remove_carta(jogo_pilha(sol,psaida));
+				carta_abre(aux);
+				pilha_insere_carta(jogo_pilha(sol,psaida),aux);
+				jogo_desenha(sol);
+			}
+		}else{
+			printw("\nJogada Invalida");
+		}
 	}
 }
 
@@ -184,8 +245,10 @@ void jogo_para_jogo(jogo sol){
 	int ndapilha,pilhadestino;
 	printw ("\nDigite qual pilha deseja mover");
 	ndapilha = tela_le(sol->tela);
+	tela_atualiza(sol->tela);
 	printw ("\nDigite para qual pilha deseja mover");
 	pilhadestino = tela_le(sol->tela);
+	pilha p = jogo_pilha(sol,ndapilha);
 	if(!pilha_vazia(p)){
 		carta c = pilha_remove_carta(jogo_pilha(sol,ndapilha));
 		pilha_insere_carta(jogo_pilha(sol,pilhadestino),c);

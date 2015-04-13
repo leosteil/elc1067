@@ -204,6 +204,6 @@ void tela_lelinha(tela t, char *s, int tam)
     noecho();
 }
 
-void comandos_tela (tela t){
+/*void comandos_tela (tela t){
     printw("\nCOMANDOS : Espaço - Monte-Descarte\nG - Descarte-Jogo\n");
-}
+}*/

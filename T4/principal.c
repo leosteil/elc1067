@@ -89,6 +89,9 @@ main(int argc, char **argv)
 		switch(tecla){
 			case ' ':
 				monte_para_descarte(solit);
+				if(pilha_vazia(jogo_monte(solit))){
+					descarte_para_monte(solit);
+				}
 				break;
 			case 'g':
 				descarte_para_ases(solit);
@@ -97,7 +100,7 @@ main(int argc, char **argv)
 				descarte_para_jogo(solit);
 				break;
 			case 'j':
-				jogo_para_ases(solit,2);
+				jogo_para_ases(solit);
 				break;
 			case 'k':
 				ases_para_jogo(solit,0);
