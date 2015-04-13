@@ -184,6 +184,7 @@ void descarte_para_ases(jogo sol){
 		}else{
 			printw("\nJogada invalida");
 			pilha_insere_carta(jogo_ases(sol,npdestino),as);
+			pilha_insere_carta(jogo_descartes(sol),c);
 		}
 	}	
 }
