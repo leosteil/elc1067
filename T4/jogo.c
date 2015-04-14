@@ -294,12 +294,13 @@ void jogo_para_ases(jogo sol){
 			pilha_insere_carta(jogo_ases(sol,npdestino),p_as);
 			pilha_insere_carta(jogo_ases(sol,npdestino),c);
 			jogo_desenha(sol);
-			if(!pilha_vazia(jogo_pilha(sol,psaida))){
+			/*if(!pilha_vazia(jogo_pilha(sol,psaida))){
 				carta aux = pilha_remove_carta(jogo_pilha(sol,psaida));
 				carta_abre(aux);
 				pilha_insere_carta(jogo_pilha(sol,psaida),aux);
 				jogo_desenha(sol);
-			}
+			}*/
+			abre_carta(sol,jogo_pilha(sol,psaida));	
 		}else{
 			printw("\nJogada invalida");
 			pilha_insere_carta(jogo_ases(sol,npdestino),p_as);
@@ -335,13 +336,14 @@ void jogo_para_jogo(jogo sol){
 		if(carta_valor(c) == 13){
 			pilha_insere_carta(jogo_pilha(sol,npdestino),c);
 			jogo_desenha(sol);
-			return;
-			if(!pilha_vazia(jogo_pilha(sol,psaida))){
+			/*if(!pilha_vazia(jogo_pilha(sol,psaida))){
 				carta aux = pilha_remove_carta(jogo_pilha(sol,psaida));
 				carta_abre(aux);
 				pilha_insere_carta(jogo_pilha(sol,psaida),aux);
 				jogo_desenha(sol);
-			}
+			}*/
+			abre_carta(sol,jogo_pilha(sol,psaida));
+			return;	
 		}
 	}
 
@@ -351,12 +353,13 @@ void jogo_para_jogo(jogo sol){
 			pilha_insere_carta(jogo_pilha(sol,npdestino),jogo);
 			pilha_insere_carta(jogo_pilha(sol,npdestino),c);
 			jogo_desenha(sol);
-			if(!pilha_vazia(jogo_pilha(sol,psaida))){
+			/*if(!pilha_vazia(jogo_pilha(sol,psaida))){
 				carta aux = pilha_remove_carta(jogo_pilha(sol,psaida));
 				carta_abre(aux);
 				pilha_insere_carta(jogo_pilha(sol,psaida),aux);
 				jogo_desenha(sol);
-			}
+			}*/
+			abre_carta(sol,jogo_pilha(sol,psaida));	
 		}else{
 			printw("\nJogada invalida");
 			pilha_insere_carta(jogo_pilha(sol,npdestino),jogo);
