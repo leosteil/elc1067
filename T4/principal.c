@@ -87,8 +87,8 @@ main(int argc, char **argv)
 
 	jogo_desenha(solit);
 	while (!pilha_vazia(jogo_monte(solit))) {
+		//printa_comandos(solit);
 		char tecla = tela_le(jogo_tela(solit));
-		//comandos_tela(solit->tela);
 		switch(tecla){
 			case ' ':
 				monte_para_descarte(solit);
