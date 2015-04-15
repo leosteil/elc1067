@@ -34,34 +34,32 @@
 #include "carta.h"
 #include "memo.h"
 
-const int tam  = 50;
+#define tam 52
 
 struct vetor {
 	carta* baralho;   /* baralho - vetor de cartas */
-	int n, aux;		/* número de cartas */
+	int n;		/* número de cartas */
 };
 
 vetor_t* vetor_cria(void)
 {
-	struct vetor *vet = (struct vetor*)memo_aloca(sizeof(struct vetor));
-	//vet->n = 0;
-	(*vet).n = 0; // mesma coisa
+	vetor_t *vet = (vetor_t*)memo_aloca(sizeof(vetor_t));
+	vet->n = 0;
+	//(*vet).n = 0; // mesma coisa
 
 	int i;
 
 	vet -> baralho = (carta*)memo_aloca(tam*sizeof(carta)); // vetor de cartas
 
-	for(i=0; i<tam; i++){
+	for(i=0; i<tam; i++)
 		vet -> baralho[i] = NULL; // = NULL para evitar erros	
-	}
+	
 
 	return vet;
 }
 
 void vetor_destroi(vetor_t* vet)
 {
-	int i;
-
 	memo_libera(vet->baralho);	
 	memo_libera(vet);	
 }
@@ -85,9 +83,8 @@ void vetor_insere_carta(vetor_t *vet, int indice, carta c)
 		for (i=vet->n; i>=indice; i--){
 			vet -> baralho[i] = vet->baralho[i-1];
 		}
-		vet->baralho[indice] = c;
 	}	
-	
+	vet->baralho[indice] = c;
 	vet -> n++;
 
 }
@@ -103,7 +100,7 @@ carta vetor_remove_carta(vetor_t *vet, int indice)
 		return NULL;
 	}
 
-	for(i=indice;i< vet->n -1;i++){
+	for(i=indice;i< vet->n;i++){
 		vet->baralho[i] = vet->baralho[i+1];
 	}
 
@@ -120,10 +117,12 @@ carta vetor_acessa_carta(vetor_t *vet, int indice)
 
 bool vetor_valido(vetor_t *vet)
 {	
-	if(vet==NULL){
+	/*if(vet==NULL){
 		return false;
 	}else{
 		return true;
-	}
+	}*/
+
+	return true;
 
 }

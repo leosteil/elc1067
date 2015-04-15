@@ -140,6 +140,28 @@ void abre_carta(jogo sol, pilha p){ // ainda nao utilizada, vai economizar codig
 	jogo_desenha(sol);
 }
 
+void finaliza_jogo(jogo sol){
+	printw("\nJogo Finalizado Pelo Usuario\n");
+	tela_le(sol->tela);
+	jogo_destroi(sol);
+	memo_relatorio();
+	exit(0);
+}
+
+//carta a eh a do descarte b e a da pdestino
+void verifica_cor(jogo sol,carta a,carta b,int destino){
+	int verifica = carta_naipe(a) + carta_naipe(b); 
+	if ((carta_naipe(a) =='0' || carta_naipe(a) =='1') && (carta_naipe(b) =='2' || carta_naipe(b) =='3')){
+		pilha_insere_carta(jogo_pilha(sol,destino),b);
+		pilha_insere_carta(jogo_pilha(sol,destino),a);
+		jogo_desenha(sol);
+	}else{
+			printw("\nJogada Invalida");
+			pilha_insere_carta(jogo_pilha(sol,destino),b);
+			pilha_insere_carta(jogo_descartes(sol),a);			
+		}
+}
+
 void monte_para_descarte(jogo sol){ // pronta
 	carta c = pilha_remove_carta(jogo_monte(sol));
 	carta_abre(c);
@@ -228,13 +250,15 @@ void descarte_para_jogo(jogo sol){ // move as cartas do descarte para as 7 pilha
 	if(!pilha_vazia(p)){
 		carta jogo = pilha_remove_carta(jogo_pilha(sol,npdestino)); // carta que esta em uma das 7 pilhas
 		if(carta_valor(c) == carta_valor(jogo)-1 && carta_naipe(c) != carta_naipe(jogo)){	
-			pilha_insere_carta(jogo_pilha(sol,npdestino),jogo);
+			/*pilha_insere_carta(jogo_pilha(sol,npdestino),jogo);
 			pilha_insere_carta(jogo_pilha(sol,npdestino),c);
-			jogo_desenha(sol);
+			jogo_desenha(sol);*/
+			verifica_cor(sol,c,jogo,npdestino);
 		}else{
 			printw("\nJogada Invalida");
 			pilha_insere_carta(jogo_pilha(sol,npdestino),jogo);
-			pilha_insere_carta(jogo_descartes(sol),c);			
+			pilha_insere_carta(jogo_descartes(sol),c);
+			jogo_desenha(sol);			
 		}
 	}
 }

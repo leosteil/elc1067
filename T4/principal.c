@@ -46,7 +46,7 @@ void inicia_jogo(jogo solit){
 	int i,j;
 	carta c;
 	
-	for(i=0; i<4; i++){	// cria as cartas 
+	for(i=0; i<=3; i++){	// cria as cartas 
 		for(j=1; j<=13;j++){
 			vetor_insere_carta(cartas, (i*13)+j-1, carta_cria(j,i));
 		}
@@ -73,6 +73,8 @@ void inicia_jogo(jogo solit){
 		carta c = vetor_remove_carta(fora_ordem,0);
 		pilha_insere_carta(jogo_monte(solit),c);	
 	}
+	vetor_destroi(cartas);
+	vetor_destroi(fora_ordem);
 }
 
 int 
@@ -84,7 +86,7 @@ main(int argc, char **argv)
 	char tecla;
 
 	jogo_desenha(solit);
-	while (!pilha_vazia(jogo_monte(solit)) /*&& tecla != 's'*/) {
+	while (!pilha_vazia(jogo_monte(solit))) {
 		char tecla = tela_le(jogo_tela(solit));
 		//comandos_tela(solit->tela);
 		switch(tecla){
@@ -109,15 +111,14 @@ main(int argc, char **argv)
 			case 'l':
 				jogo_para_jogo(solit);
 				break;
-			/*case 's':
-				printw("\nVoce fechou o jogo\n");
-				return 0;*/	
+			case 's':
+				finaliza_jogo(solit);
+				break;
 		}
 	}
-	tela_le(jogo_tela(solit));
-	jogo_destroi(solit);
+	//tela_le(jogo_tela(solit));
+	//jogo_destroi(solit);
 
 	/* relatório de memória */
-	memo_relatorio();
-	return 0;
+	//memo_relatorio();
 }

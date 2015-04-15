@@ -31,6 +31,7 @@
 
 #include "fila.h"
 #include "pilha.h"
+#include "memo.h" 
 
 struct _pilha {
 	fila topo;
