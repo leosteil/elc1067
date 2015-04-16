@@ -88,8 +88,8 @@ main(int argc, char **argv)
 	jogo_desenha(solit);
 	while (!pilha_vazia(jogo_monte(solit))) {
 		char tecla = tela_le(jogo_tela(solit));
-		//verifica_final(solit);
 		switch(tecla){
+			printw("\nComandos: 'Space' - MONTE - DESCARTE, 'G' - DESCARTE - ASES, 'H'- DESCARTE - JOGO, 'J' - JOGO - ASES, 'K'- ASES - JOGO, 'L' - JOGO-JOGO - 'S' SAIR\n");
 			case ' ':
 				monte_para_descarte(solit);
 				if(pilha_vazia(jogo_monte(solit))){
@@ -115,6 +115,7 @@ main(int argc, char **argv)
 				finaliza_jogo(solit);
 				break;
 		}
+		//int x = verifica_final(sol);
 	}
 	//tela_le(jogo_tela(solit));
 	//jogo_destroi(solit);

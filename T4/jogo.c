@@ -148,18 +148,18 @@ void finaliza_jogo(jogo sol){
 	exit(0);
 }
 
-void verifica_final(jogo sol){
+/*void verifica_final(jogo sol){
 	int i,x;
 	carta c;
 	for(i=0;i<4;i++){
-		c = pilha_remove_carta(jogo_ases(sol,i));
+		c = pilha_remove_carta(sol->ases[i]);
 		if(carta_valor(c) == 13);
 			x++;
 	}
 	if(x == 3){
 		finaliza_jogo(sol);
 	}
-}
+}*/
 
 //nao vai ser utilizada porque nao consigo deixar a mesma genetica, pra qualquer movimento
 /*void verifica_cor(jogo sol,carta a,carta b,int destino,pilha c, pilha d){
@@ -414,14 +414,14 @@ void ases_para_jogo(jogo sol){
 	if(!pilha_vazia(p)){
 		carta jogo = pilha_remove_carta(jogo_pilha(sol,npdestino)); // carta que esta em uma das 7 pilhas
 		int verifica = carta_naipe(c) + carta_naipe(jogo);//se a soma for entre 2 e 4 contando os mesmos, indica diferença
-		if(carta_valor(c) == carta_valor(jogo)+1 && carta_naipe(c) != carta_naipe(jogo) && verifica >=2 && verifica<=4){	
+		if(carta_valor(c) == carta_valor(jogo)-1 && carta_naipe(c) != carta_naipe(jogo) && verifica >=2 && verifica<=4){	
 				pilha_insere_carta(jogo_pilha(sol,npdestino),jogo);
 				pilha_insere_carta(jogo_pilha(sol,npdestino),c);
 				jogo_desenha(sol);
 		}
-		if(verifica <2 || verifica>4){
+		if(carta_valor(c) != carta_valor(jogo)-1){
 			pilha_insere_carta(jogo_pilha(sol,npdestino),jogo);
-			pilha_insere_carta(jogo_descartes(sol),c);
+			pilha_insere_carta(jogo_ases(sol,psaida),c);
 			jogo_desenha(sol);		
 			printw("\nJogada Invalida");	
 		}
@@ -503,7 +503,7 @@ void jogo_para_jogo(jogo sol){
 				//caux= pilha_remove_carta(jogo_pilha(sol,npdestino));
 				//pilha_insere_carta(jogo_pilha(sol,npdestino),caux); 
 			}
-		}else{
+		}else if (carta_valor(caux1) != carta_valor(caux)-1){
 			printw("\nJogada Invalida\n"); 
 			pilha_insere_carta(jogo_pilha(sol, psaida), caux1);
 		}

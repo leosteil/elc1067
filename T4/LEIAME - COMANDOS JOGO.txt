@@ -1,0 +1,1 @@
+Comandos: 'Space' - MONTE - DESCARTE, 'G' - DESCARTE - ASES, 'H'- DESCARTE - JOGO, 'J' - JOGO - ASES, 'K'- ASES - JOGO, 'L' - JOGO-JOGO - 'S' SAIR
