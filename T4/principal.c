@@ -87,8 +87,8 @@ main(int argc, char **argv)
 
 	jogo_desenha(solit);
 	while (!pilha_vazia(jogo_monte(solit))) {
-		//printa_comandos(solit);
 		char tecla = tela_le(jogo_tela(solit));
+		//verifica_final(solit);
 		switch(tecla){
 			case ' ':
 				monte_para_descarte(solit);
@@ -96,22 +96,22 @@ main(int argc, char **argv)
 					descarte_para_monte(solit);
 				}
 				break;
-			case 'g':
+			case 'g': case 'G':
 				descarte_para_ases(solit);
 				break;
-			case 'h':
+			case 'h': case 'H':
 				descarte_para_jogo(solit);
 				break;
-			case 'j':
+			case 'j': case 'J':
 				jogo_para_ases(solit);
 				break;
-			case 'k':
+			case 'k': case 'K':
 				ases_para_jogo(solit,0);
 				break;
-			case 'l':
+			case 'l': case 'L':
 				jogo_para_jogo(solit);
 				break;
-			case 's':
+			case 's': case 'S':
 				finaliza_jogo(solit);
 				break;
 		}
