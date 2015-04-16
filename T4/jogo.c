@@ -214,6 +214,7 @@ void descarte_para_ases(jogo sol){
 			return;
 		}else{
 			printw ("\nJogada Invalida");
+			pilha_insere_carta(jogo_descartes(sol),c);
 		}
 	}
 				
@@ -418,43 +419,79 @@ void jogo_para_jogo(jogo sol){
 	npdestino = tela_le(sol->tela);
 	npdestino = npdestino -49;
 
-	pilha p = jogo_pilha(sol,npdestino);
+	//pilha p = jogo_pilha(sol,npdestino);
 	pilha aux=pilha_cria();
+	pilha aux2=pilha_cria();
 	carta c = pilha_remove_carta(jogo_pilha(sol,psaida));
-	//carta caux; 
+	carta caux;
 
-	if(pilha_vazia(p)){
+	if(pilha_vazia(jogo_pilha(sol,npdestino))){
 		while(carta_aberta(c)){
 			pilha_insere_carta(aux,c);
 			c = pilha_remove_carta(jogo_pilha(sol,psaida));
 		}
-		if(carta_valor(c)==13){		
+		pilha_insere_carta(jogo_pilha(sol,psaida),c);
+		c=pilha_remove_carta(aux);
+		pilha_insere_carta(aux,c);
+		if(carta_valor(c)==13){	
+			printf("AQUI MANO\n");	
+			while(!pilha_vazia(aux)){
+				pilha_insere_carta(jogo_pilha(sol,npdestino),c);
+				c = pilha_remove_carta(aux);					
+			}
+			abre_carta(sol,jogo_pilha(sol,psaida));
+			return;	
+		}		
+		if(carta_valor(c)!=13){
+			printf("ENTROU AQUI SI FUDEU\n");
+			printw("\nPara pilha vazia so e possivel mover REI");
 			while(!pilha_vazia(aux)){
 				c = pilha_remove_carta(aux);
-				pilha_insere_carta(jogo_pilha(sol,npdestino),c);
-				jogo_desenha(sol);					
+				pilha_insere_carta(jogo_pilha(sol,psaida),c);
+			}
+		}
+		return;
+	}
+
+	if(!pilha_vazia(jogo_pilha(sol,npdestino))){
+		caux = pilha_remove_carta(jogo_pilha(sol,npdestino));
+		while(!pilha_vazia(jogo_pilha(sol,psaida)) && carta_aberta(c)){
+			printf("\n1\n");
+			pilha_insere_carta(aux,c);
+			c = pilha_remove_carta(jogo_pilha(sol,psaida));
+		}
+		pilha_insere_carta(jogo_pilha(sol,psaida),c);		
+		c=pilha_remove_carta(aux);
+		printf("\n2\n");
+		int teste = carta_valor(c)+carta_valor(caux);
+		pilha_insere_carta(aux,c);
+			while(!pilha_vazia(aux)){ // se for falso percorre aqui
+				if(carta_valor(c)!=carta_valor(caux)-1 && teste <2 && teste >4){
+					printf("\nERRADO\n");
+					pilha_insere_carta(aux2,c);
+					c=pilha_remove_carta(aux);
+				}
+			pilha_insere_carta(aux,c);	
 			}	
-		}
-		abre_carta(sol,jogo_pilha(sol,psaida));			
-	}else{
-		printw("\nPara pilha vazia, so pode mover REI\n");
-	}		
+			while(!pilha_vazia(aux2)){
+				pilha_insere_carta(jogo_pilha(sol,psaida),c);
+				c=pilha_remove_carta(aux2);
+			}
+			while(!pilha_vazia(aux)){// se for verdadeiro percorre aqui
+				if(carta_valor(c)==carta_valor(caux)-1 && teste >=2 && teste <=4){
+					printf("\nCORRETO\n");
+					pilha_insere_carta(jogo_pilha(sol,npdestino),c);
+					c=pilha_remove_carta(aux);
+				}
+			}
+				
+		}/*else{
+			printf("\nAQUI\n");
+			printw("\nJogada Invalida\n");
+			return;
+		}*/
 
-
-	if(!pilha_vazia(p)){
-		carta jogo = pilha_remove_carta(jogo_pilha(sol,npdestino)); // carta que esta na pilha destino
-		int verifica = carta_naipe(c)+ carta_naipe(jogo);
-		if(carta_valor(c) == carta_valor(jogo)-1 && carta_naipe(c) != carta_naipe(jogo) && verifica >=2 && verifica){
-			pilha_insere_carta(jogo_pilha(sol,npdestino),jogo);
-			pilha_insere_carta(jogo_pilha(sol,npdestino),c);
-			jogo_desenha(sol);
-			abre_carta(sol,jogo_pilha(sol,psaida));	
-		}else{
-			printw("\nJogada invalida");
-			pilha_insere_carta(jogo_pilha(sol,npdestino),jogo);
-			pilha_insere_carta(jogo_pilha(sol,psaida),c);
-		}
-	}	
+	
 	pilha_destroi(aux);
+	pilha_destroi(aux2);
 }
-
