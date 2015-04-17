@@ -282,8 +282,7 @@ void descarte_para_jogo(jogo sol){ // move as cartas do descarte para as 7 pilha
 				pilha_insere_carta(jogo_pilha(sol,npdestino),jogo);
 				pilha_insere_carta(jogo_pilha(sol,npdestino),c);
 				jogo_desenha(sol);
-		}
-		if(carta_valor(c) != carta_valor(jogo)-1 && carta_naipe(c) == carta_naipe(jogo) && (verifica <2 || verifica >4)){
+		}else{
 			pilha_insere_carta(jogo_pilha(sol,npdestino),jogo);
 			pilha_insere_carta(jogo_descartes(sol),c);
 			jogo_desenha(sol);		
@@ -492,7 +491,6 @@ void jogo_para_jogo(jogo sol){
 		}
 
 		caux1 = pilha_remove_carta(aux);
-		//pilha_insere_carta(aux, caux1);
 		
 		int teste = carta_naipe(caux1) + carta_naipe(caux);
 		if (carta_valor(caux1) == carta_valor(caux)-1 && carta_naipe(caux1) != carta_naipe(caux) && teste >=2 && teste <=4) {
@@ -500,14 +498,28 @@ void jogo_para_jogo(jogo sol){
 			while (!pilha_vazia(aux)){
 				caux1 = pilha_remove_carta(aux);
 				pilha_insere_carta(jogo_pilha(sol, npdestino), caux1);
-				//caux= pilha_remove_carta(jogo_pilha(sol,npdestino));
-				//pilha_insere_carta(jogo_pilha(sol,npdestino),caux); 
 			}
-		}else if (carta_valor(caux1) != carta_valor(caux)-1){
-			printw("\nJogada Invalida\n"); 
+		}else{
+			//caux = pilha_remove_carta(jogo_pilha(sol,npdestino));
+			//int valor = carta_valor(caux);
 			pilha_insere_carta(jogo_pilha(sol, psaida), caux1);
-		}
-	}	
+			while(!pilha_vazia(aux)){
+				caux1 = pilha_remove_carta(aux);
+				if(carta_valor(caux1) == carta_valor(caux)-1){
+					pilha_insere_carta(jogo_pilha(sol,npdestino),caux1);
+					if(pilha_vazia(aux)){
+						pilha_insere_carta(jogo_pilha(sol,npdestino),caux1);
+						pilha_remove_carta(jogo_pilha(sol,npdestino));
+					}
+				}else{
+					pilha_insere_carta(jogo_pilha(sol,psaida),caux1);
+				}
+
+			}
+		}		
+	}
 	abre_carta(sol, jogo_pilha(sol, psaida));
 	pilha_destroi(aux);
+
 }
+	
