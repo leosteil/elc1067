@@ -509,11 +509,12 @@ void jogo_para_jogo(jogo sol){
 					pilha_insere_carta(jogo_pilha(sol,npdestino),caux1);
 					if(pilha_vazia(aux)){
 						pilha_insere_carta(jogo_pilha(sol,npdestino),caux1);
-						pilha_remove_carta(jogo_pilha(sol,npdestino));
+						//pilha_remove_carta(jogo_pilha(sol,npdestino));
 					}
 				}else{
 					pilha_insere_carta(jogo_pilha(sol,psaida),caux1);
 				}
+			pilha_remove_carta(jogo_pilha(sol,npdestino));	
 
 			}
 		}		
