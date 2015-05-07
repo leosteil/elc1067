@@ -38,13 +38,14 @@ marc* lista_cria(void){
 
 	marc* marcador = (marc*) memo_aloca(sizeof(marc));
 	marcador->prim = novo;
-	marcador->ult = novo;
+	marcador->ultim = novo;
 
 	return marcador;
 } 
 
 void lista_destroi(marc* marcador){
+	memo_libera(marcador->prim->texto);
 	memo_libera(marcador->prim);
-	memo_libera(marcador->ult);
-	memo_libera(novo);
+	memo_libera(marcador);
 }
+

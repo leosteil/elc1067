@@ -32,7 +32,7 @@
 
 typedef struct {
 	char *nome;     /* nome do arquivo sendo editado */
-	lista_t* linhas; /* lista de linhas do arquivo */
+	lista_t* marc; /* lista de linhas do arquivo */
 	int nlin;       /* numero de linhas no texto (numero de elementos atualmente em linhas) */
 	int lincur;     /* linha onde esta o cursor (comeca em 0) */
 	int colcur;     /* coluna onde esta o cursoe na linha acima */

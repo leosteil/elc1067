@@ -30,16 +30,18 @@
 #include <stdlib.h>
 #include "memo.h"
 
-typedef struct lista{
+struct lista{
+	char* texto;
 	struct lista* prox;
 	struct lista* ant;
-	char* texto;
-}lista_t;
+};
+typedef struct lista lista_t;
 
-typedef struct{
+struct marcador{
 	lista_t* prim;
 	lista_t* ultim;
-}marc; // guarda o primeiro e o ultimo elemento da lista
+};
+typedef struct marcador marc; // guarda o primeiro e o ultimo elemento da lista
 
 marc* lista_cria(void);
 void lista_destroi(marc* marcador);
