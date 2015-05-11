@@ -30,6 +30,8 @@
 #include <stdlib.h>
 #include "memo.h"
 
+
+//cada no desa lista e uma linha do editor
 struct lista{
 	char* texto;
 	struct lista* prox;
@@ -39,15 +41,31 @@ typedef struct lista lista_t;
 
 struct marcador{
 	lista_t* prim;
-	lista_t* ultim;
+	lista_t* ultm;
+	
 };
-typedef struct marcador marc; // guarda o primeiro e o ultimo elemento da lista
+typedef struct marcador marc;
 
-marc* lista_cria(void);
-void lista_destroi(marc* marcador);
-marc* lista_insere(marc* marcador, int pos);
-marc* lista_remove(marc* marcador, int pos);
-lista_t* lista_busca(marc* marcador, int pos);
 
+//cria uma lista
+lista_t* lista_cria(void);
+
+//destoi uma lista
+void lista_destroi(lista_t* lista);
+
+//insere elementos na lista
+lista_t* lista_insere(lista_t* lista, char* text);
+
+//remove elementos na lista
+lista_t* lista_remove(lista_t* lista, int pos);
+
+//busca elementos da lista
+lista_t* lista_busca(lista_t* lista, int pos);
+
+//imprime a lista 
+void lista_imprime (lista_t* l);
+
+//retorna o ultimo elemento da lista
+lista_t* ultimo(lista_t* l);
 
 #endif /* _LISTA_H_ */

@@ -30,20 +30,18 @@
 #include <stdio.h>
 #include <unistd.h>
 
+#include "lista.h"
 #include "texto.h"
 #include "memo.h"
 
 int main(int argc, char **argv)
-{
-	texto_t* texto;
-	texto = texto_inicia();
-	
-	/* enquanto continua execução */
-	while(texto_processa_comandos(texto) == true) {
-		texto_atualiza_tela(texto);
-	}
-	texto_destroi(texto);
-	memo_relatorio();
-
+{	
+	lista_t* l;
+	l = lista_cria();
+	/*l = lista_insere(l,"OI");
+	l = lista_insere(l,"OI");
+	l = lista_insere(l,"OI");
+	l = lista_insere(l,"OI");*/
+	lista_imprime(l);
 	return 0;
 }

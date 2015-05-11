@@ -27,25 +27,58 @@
 
 #include "lista.h"
 #include "memo.h"
+#include <stdio.h>
 
 /* implementa aqui sua estrutura lista_t duplamente encadeada */
 
-marc* lista_cria(void){
+lista_t* lista_cria(void){
 	lista_t* novo = (lista_t*) memo_aloca(sizeof(lista_t));
 	novo->prox = NULL;
 	novo->ant  = NULL;
+
+	novo->texto = (char*) memo_aloca(sizeof(char));
 	novo->texto[0] = '\0';
 
 	marc* marcador = (marc*) memo_aloca(sizeof(marc));
 	marcador->prim = novo;
-	marcador->ultim = novo;
+	marcador->ultm = novo;
 
 	return marcador;
 } 
 
-void lista_destroi(marc* marcador){
-	memo_libera(marcador->prim->texto);
-	memo_libera(marcador->prim);
-	memo_libera(marcador);
+/*void lista_destroi(lista_t* t){
+	memo_libera(t);
+}*/
+
+lista_t* ultimo(lista_t* l){
+	lista_t* p=l;
+	if(p!=NULL){
+		while(p->prox != NULL){
+			p = p->prox;
+		}
+	}
+	return p;
+}
+
+lista_t* lista_insere(lista_t* l, char* text){
+	lista_t* novo= (lista_t*) malloc(sizeof(lista_t));
+	novo ->texto = text;
+	novo->prox = NULL;
+	lista_t* ult = ultimo(l);
+	//verifica se a lista nao estava vazia
+	if(ult==NULL){ 
+		l = novo;
+	}else{
+		ult->prox =novo;
+	}
+	novo->ant=ult; 
+	return l;
+}
+
+void lista_imprime (lista_t* l){
+	lista_t* p;
+	for(p=l;p!=NULL;p=p->prox){
+		printf("info = %s\n",p->texto);
+	}
 }
 
