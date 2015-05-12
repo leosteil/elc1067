@@ -39,8 +39,13 @@ int main(int argc, char **argv)
 	texto_t* texto;
 	texto = texto_inicia();
 	
+	marc* marcador;
+	marcador = lista_cria();
+	marcador = lista_insere(marcador, 1);
+
 	/* enquanto continua execução */
 	while(texto_processa_comandos(texto) == true) {
+		marcador = lista_insere(marcador, 1);
 		texto_atualiza_tela(texto);
 	}
 	texto_destroi(texto);

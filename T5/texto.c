@@ -43,7 +43,7 @@ texto_t* texto_inicia(void)
 	texto_t* t = (texto_t*)memo_aloca(sizeof(texto_t));
 	tamanho_t tam = { 600, 400 };	/* tamanho da tela */
 	
-	tela_inicializa(&t->tela, tam, "Editor teste");
+	tela_inicializa(&t->tela, tam, "Editor Leonardo");
 	tela_limpa(&t->tela);
 
 	t->nlin = 0;
@@ -52,15 +52,20 @@ texto_t* texto_inicia(void)
 	t->lin1 = 0;
 	t->col1 = 0;
 
-	/* inicialize aqui quaisquer outras estruturas, como a lista de linhas */
+	t->linha = lista_cria();
 
 	return t;
 }
 
 void texto_destroi(texto_t* txt)
 {
+	while(txt->linha->prim != txt->linha->ultm){
+		lista_remove(txt,1);
+	}
+
 	tela_limpa(&txt->tela);
 	tela_finaliza(&txt->tela);
+	lista_destroi(txt->linha)
 	memo_libera(txt);
 }
 
@@ -96,10 +101,16 @@ void texto_desenha_cursor_tela(texto_t *txt)
 	tela_linha(&txt->tela, pt1, pt2);
 }
 
+
+/*Desenha toda a tela. A primeira linha a ser desenhada é lin1. A primeira coluna
+a ser desenhada em cada linha é col1. Deve ser completada baseada no exemplo
+dado.
+IMPORTANTE: cuidado com o desenho do cursor, pois caracteres tem diferentes
+tamanhos em pixels*/
 void texto_desenha_tela(texto_t *txt)
 {
 	cor_t cor;
-	char *texto;
+	char texto[1];
 	tamanho_t tt;
 	ponto_t pt;
 	int i;
@@ -107,14 +118,9 @@ void texto_desenha_tela(texto_t *txt)
 	/* limpa a tela. Comentar se ficar lento */
 	tela_limpa(&txt->tela);
 
-	texto = "nada, aperte CTRL+q para sair ou direcionais para cursor!";
+	texto = "";
 	tt = tela_tamanho_texto(&txt->tela, texto);
-	for(i = 1; i < 10; i++){
-		/* cores RGB da linha */
-		cor.r = (float)i/10;
-		cor.g = (float)i/10;
-		cor.b = (float)i/10;
-
+	for(i = 1; i <linha; i++){
 		/* calcula posicao da nova linha */
 		pt.x = 1;
 		pt.y = (i - 1)*tt.alt + 1;

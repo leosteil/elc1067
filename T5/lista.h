@@ -31,7 +31,7 @@
 #include "memo.h"
 
 
-//cada no desa lista e uma linha do editor
+//cada no dessa lista e uma linha do editor
 struct lista{
 	char* texto;
 	struct lista* prox;
