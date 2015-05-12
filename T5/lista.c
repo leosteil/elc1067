@@ -31,7 +31,7 @@
 
 /* implementa aqui sua estrutura lista_t duplamente encadeada */
 
-lista_t* lista_cria(void){
+marc* lista_cria(void){
 	lista_t* novo = (lista_t*) memo_aloca(sizeof(lista_t));
 	novo->prox = NULL;
 	novo->ant  = NULL;
@@ -46,39 +46,64 @@ lista_t* lista_cria(void){
 	return marcador;
 } 
 
-/*void lista_destroi(lista_t* t){
-	memo_libera(t);
-}*/
-
-lista_t* ultimo(lista_t* l){
-	lista_t* p=l;
-	if(p!=NULL){
-		while(p->prox != NULL){
-			p = p->prox;
-		}
-	}
-	return p;
+void lista_destroi(marc* m){
+	memo_libera(m->prim->texto);
+	memo_libera(m->prim);
+	memo_libera(m);
 }
 
-lista_t* lista_insere(lista_t* l, char* text){
-	lista_t* novo= (lista_t*) malloc(sizeof(lista_t));
-	novo ->texto = text;
-	novo->prox = NULL;
-	lista_t* ult = ultimo(l);
-	//verifica se a lista nao estava vazia
-	if(ult==NULL){ 
-		l = novo;
+
+marc* lista_insere(marc* marcador, int pos){
+	lista_t* novo = (lista_t*) memo_aloca(sizeof(lista_t));
+	novo->texto = (char*) memo_aloca(sizeof(char));
+	novo->texto[0] = '\0';
+	if(pos == 1){
+		novo->ant = NULL;
+		novo->prox = marcador->prim;
+		marcador->prim->ant = novo;
+		marcador->prim = novo;
 	}else{
-		ult->prox =novo;
+		novo->ant = lista_busca(marcador, pos-1);
+		novo->prox = lista_busca(marcador, pos-1)->prox;
+		if(lista_busca(marcador, pos-1)->prox != NULL){
+			lista_busca(marcador, pos-1)->prox->ant = novo;
+		}else{
+			marcador->ultm = novo;
+		}
+		lista_busca(marcador, pos-1)->prox = novo;
 	}
-	novo->ant=ult; 
-	return l;
+	return marcador;
 }
 
-void lista_imprime (lista_t* l){
+/*void lista_imprime (lista_t* l){
 	lista_t* p;
 	for(p=l;p!=NULL;p=p->prox){
 		printf("info = %s\n",p->texto);
 	}
+}*/
+
+lista_t* lista_busca(marc* marcador, int pos){
+	int i;
+	lista_t* p = marcador->prim;
+	for(i = 1; i < pos; i++){
+		p = p->prox;
+	}
+	return p;
 }
 
+marc* lista_remove(marc* marcador, int pos){
+	lista_t* p = lista_busca(marcador, pos);
+	if(p->prox != NULL){
+		p->prox->ant = p->ant;
+	}else{
+		marcador->ultm = p->ant;
+	}
+	if(p->ant != NULL){
+		p->ant->prox = p->prox;
+	}else{
+		marcador->prim = p->prox;
+	}
+	memo_libera(p->texto);
+	memo_libera(p);
+	return marcador;
+}

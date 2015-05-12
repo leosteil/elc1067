@@ -48,19 +48,19 @@ typedef struct marcador marc;
 
 
 //cria uma lista
-lista_t* lista_cria(void);
+marc* lista_cria(void);
 
 //destoi uma lista
-void lista_destroi(lista_t* lista);
+void lista_destroi(marc* marcador);
 
 //insere elementos na lista
-lista_t* lista_insere(lista_t* lista, char* text);
+marc* lista_insere(marc* marcador, int pos);
 
 //remove elementos na lista
-lista_t* lista_remove(lista_t* lista, int pos);
+marc* lista_remove(marc* marcador, int pos);
 
 //busca elementos da lista
-lista_t* lista_busca(lista_t* lista, int pos);
+lista_t* lista_busca(marc* marcador, int pos);
 
 //imprime a lista 
 void lista_imprime (lista_t* l);
