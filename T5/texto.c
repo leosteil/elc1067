@@ -60,12 +60,12 @@ texto_t* texto_inicia(void)
 void texto_destroi(texto_t* txt)
 {
 	while(txt->linha->prim != txt->linha->ultm){
-		lista_remove(txt,1);
+		lista_remove(txt->linha,1);
 	}
 
 	tela_limpa(&txt->tela);
 	tela_finaliza(&txt->tela);
-	lista_destroi(txt->linha)
+	lista_destroi(txt->linha);
 	memo_libera(txt);
 }
 
@@ -110,7 +110,7 @@ tamanhos em pixels*/
 void texto_desenha_tela(texto_t *txt)
 {
 	cor_t cor;
-	char texto[1];
+	char *texto;
 	tamanho_t tt;
 	ponto_t pt;
 	int i;
@@ -118,15 +118,21 @@ void texto_desenha_tela(texto_t *txt)
 	/* limpa a tela. Comentar se ficar lento */
 	tela_limpa(&txt->tela);
 
-	texto = "";
-	tt = tela_tamanho_texto(&txt->tela, texto);
-	for(i = 1; i <linha; i++){
+	//cores 
+	cor.r = 0.5;
+	cor.g = 0.0;
+	cor.b = 0.0;
+	tela_cor(&txt->tela, cor);
+	
+	tt = tela_tamanho_texto(&txt->tela,texto);
+	for(i = 1; i <= txt->nlin; i++){
+		texto = lista_busca(txt->linha,i)->texto;
+		tt = tela_tamanho_texto(&txt->tela,texto);
+
 		/* calcula posicao da nova linha */
 		pt.x = 1;
 		pt.y = (i - 1)*tt.alt + 1;
-
-		/* muda cor e desenha linha */
-		tela_cor(&txt->tela, cor);
+		
 		tela_texto(&txt->tela, pt, texto);
 	}
 
@@ -160,6 +166,11 @@ bool texto_processa_comandos(texto_t* txt)
 		estado = editando;
 	}
 
+	//implementar
+	/*if (tecla == ALLEGRO_KEY_BACKSPACE){
+		remove_char()...
+	}*/
+
 	/* teclas direcionais 
 		ALLEGRO_KEY_LEFT
 		ALLEGRO_KEY_RIGHT
@@ -181,13 +192,23 @@ bool texto_processa_comandos(texto_t* txt)
 void texto_move_esq(texto_t *txt)
 {
 	/* ATENÇÃO: apenas exemplo. Mudar implementação */
-	txt->colcur--;
+	if(txt->lincur > 0){
+		txt->lincur--;
+		txt->colcur = strlen(lista_busca(txt->linha, txt->lincur)->texto);
+	}else if(txt->colcur>0){
+		txt->colcur--;
+	}
 }
 
 void texto_move_dir(texto_t *txt)
 {
 	/* ATENÇÃO: apenas exemplo. Mudar implementação */
-	txt->colcur++;
+	if(txt->lincur < txt->nlin-1){
+		txt->lincur++;
+		txt->colcur=0;
+	}else if(txt->colcur < strlen(lista(txt->linha, txt->lincur)->texto)){
+		txt->colcur++;
+	}
 }
 
 void texto_move_baixo(texto_t *txt)
@@ -202,3 +223,50 @@ void texto_move_cima(texto_t *txt)
 	txt->lincur--;
 }
 
+/*Inicializa a estrutura apontada por txt com o conteúdo do arquivo chamado nome.
+Deve ler cada linha do arquivo, alocar memória suficiente para essa linha (sem
+o '\n' final e com um '\0'), copiar o conteúdo da linha para essa memória
+alocada e adicionar a memória alocada na lista duplamente encadeada de linha.
+A função deve ainda inicializar os demais campos da estrutura apontada por txt.*/
+
+/*void texto_le_arquivo(texto_t *txt, char *nome , FILE* arq){
+	int i,j;
+	char c;
+	txt->nome = nome;
+
+	arq = fopen("n.txt", "r");
+
+	if (arq == NULL) { // impede que seja lido, caso nao tenha nada no arquivo
+		printf("Erro ao abrir um dos arquivos."); return;
+	}
+
+	while (feof(arq) == 0) {
+		txt->linha = lista_insere(txt->linha,i);
+	}
+
+	nome = (char*) memo_aloca(sizeof(char));
+}*/
+
+void texto_le_arquivo(texto_t *txt, char *nome, FILE* file){
+
+	txt->nome = nome;
+	char c;
+	int col=0, lin=1;
+
+	txt->linha = lista_insere(txt->linha, 1);
+
+	while((c = fgetc(file)) != EOF){
+		if(c == '\n'){
+			lista_busca(txt->linha, lin)->texto[col+1] = '\0';
+			col = 0;
+			lin++;
+			txt->linha = lista_insere(txt->linha, lin);
+			continue;
+		}
+		lista_busca(txt->linha, lin)->texto[col] = c;
+		lista_busca(txt->linha, lin)->texto = memo_realoca(lista_busca(txt->linha, lin)->texto, strlen(lista_busca(txt->linha, lin)->texto)+sizeof(char));
+		col++;
+	}
+
+	txt->nlin = lin-1;
+}

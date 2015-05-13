@@ -58,7 +58,7 @@ void texto_atualiza_tela(texto_t *txt);
 /* processa os comandos do usuário */
 bool texto_processa_comandos(texto_t* txt);
 
-void texto_le_arquivo(texto_t *txt, char *nome);
+void texto_le_arquivo(texto_t *txt, char *nome, FILE* arq);
 
 void texto_move_esq(texto_t *txt);
 void texto_move_dir(texto_t *txt);
