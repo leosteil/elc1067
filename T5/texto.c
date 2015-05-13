@@ -229,7 +229,7 @@ o '\n' final e com um '\0'), copiar o conteúdo da linha para essa memória
 alocada e adicionar a memória alocada na lista duplamente encadeada de linha.
 A função deve ainda inicializar os demais campos da estrutura apontada por txt.*/
 
-/*void texto_le_arquivo(texto_t *txt, char *nome , FILE* arq){
+void texto_le_arquivo(texto_t *txt, char *nome , FILE* arq){
 	int i,j;
 	char c;
 	txt->nome = nome;
@@ -240,33 +240,8 @@ A função deve ainda inicializar os demais campos da estrutura apontada por txt
 		printf("Erro ao abrir um dos arquivos."); return;
 	}
 
-	while (feof(arq) == 0) {
-		txt->linha = lista_insere(txt->linha,i);
+	while (c=fgetc(arqr) != EOF){ //enquanto n chegar no final do arquivo
+		c = fgetc(arq)
 	}
 
-	nome = (char*) memo_aloca(sizeof(char));
-}*/
-
-void texto_le_arquivo(texto_t *txt, char *nome, FILE* file){
-
-	txt->nome = nome;
-	char c;
-	int col=0, lin=1;
-
-	txt->linha = lista_insere(txt->linha, 1);
-
-	while((c = fgetc(file)) != EOF){
-		if(c == '\n'){
-			lista_busca(txt->linha, lin)->texto[col+1] = '\0';
-			col = 0;
-			lin++;
-			txt->linha = lista_insere(txt->linha, lin);
-			continue;
-		}
-		lista_busca(txt->linha, lin)->texto[col] = c;
-		lista_busca(txt->linha, lin)->texto = memo_realoca(lista_busca(txt->linha, lin)->texto, strlen(lista_busca(txt->linha, lin)->texto)+sizeof(char));
-		col++;
-	}
-
-	txt->nlin = lin-1;
 }
