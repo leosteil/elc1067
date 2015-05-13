@@ -191,36 +191,35 @@ bool texto_processa_comandos(texto_t* txt)
 
 void texto_move_esq(texto_t *txt)
 {
-	/* ATENÇÃO: apenas exemplo. Mudar implementação */
-	if(txt->lincur > 0){
-		txt->lincur--;
-		txt->colcur = strlen(lista_busca(txt->linha, txt->lincur)->texto);
-	}else if(txt->colcur>0){
+	if(txt->colcur>0){ // se for igual a 0 esta no limite da tela no lado esquedo, logo nao posso mover
 		txt->colcur--;
+	}else if (txt->lincur>0){ //se estiver a partir da segunda linha, e apertar para esqueda o cursor sobe uma linha
+		txt->lincur--;
+		/*A posiçao do cursor vai ser o tamanho da linha onde ele vai ser posicionado*/
+		txt->colcur = strlen(lista_busca(txt->linha,txt->lincur)->texto);
 	}
+
 }
 
 void texto_move_dir(texto_t *txt)
 {
-	/* ATENÇÃO: apenas exemplo. Mudar implementação */
-	if(txt->lincur < txt->nlin-1){
-		txt->lincur++;
-		txt->colcur=0;
-	}else if(txt->colcur < strlen(lista(txt->linha, txt->lincur)->texto)){
+	if(txt->colcur <strlen(lista_busca(txt->linha,txt->lincur)->texto)){
 		txt->colcur++;
 	}
 }
 
 void texto_move_baixo(texto_t *txt)
 {
-	/* ATENÇÃO: apenas exemplo. Mudar implementação */
-	txt->lincur++;
+	if(txt->lincur < txt->nlin -1){
+		txt-> lincur++;
+	}
 }
 
 void texto_move_cima(texto_t *txt)
 {
-	/* ATENÇÃO: apenas exemplo. Mudar implementação */
-	txt->lincur--;
+	if(txt->lincur > 0){
+		txt-> lincur--;
+	}
 }
 
 /*Inicializa a estrutura apontada por txt com o conteúdo do arquivo chamado nome.
@@ -229,7 +228,7 @@ o '\n' final e com um '\0'), copiar o conteúdo da linha para essa memória
 alocada e adicionar a memória alocada na lista duplamente encadeada de linha.
 A função deve ainda inicializar os demais campos da estrutura apontada por txt.*/
 
-void texto_le_arquivo(texto_t *txt, char *nome , FILE* arq){
+/*void texto_le_arquivo(texto_t *txt, char *nome , FILE* arq){
 	int i,j;
 	char c;
 	txt->nome = nome;
@@ -244,4 +243,28 @@ void texto_le_arquivo(texto_t *txt, char *nome , FILE* arq){
 		c = fgetc(arq)
 	}
 
+}*/
+
+void texto_le_arquivo(texto_t *txt, char *nome, FILE* arq){
+	char c;
+	int i=0, j=1;
+
+	txt->nome = nome;
+
+	txt->linha = lista_insere(txt->linha, 1);
+
+	while((c = fgetc(arq)) != EOF){
+		if(c == '\n'){
+			lista_busca(txt->linha, j)->texto[i+1] = '\0';
+			i = 0;
+			j++;
+			txt->linha = lista_insere(txt->linha, j);
+			continue;
+		}
+		lista_busca(txt->linha, j)->texto[i] = c;
+		lista_busca(txt->linha, j)->texto = memo_realoca(lista_busca(txt->linha, j)->texto, strlen(lista_busca(txt->linha, j)->texto)+sizeof(char));
+		i++;
+	}
+
+	txt->nlin = j-1;
 }

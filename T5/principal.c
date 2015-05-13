@@ -42,6 +42,9 @@ int main(int argc, char **argv)
 	marc* marcador;
 	marcador = lista_cria();
 	marcador = lista_insere(marcador, 1);
+	FILE* arq = fopen("arq.txt", "r");
+	char a;
+	texto_le_arquivo(texto, a, arq);
 
 	/* enquanto continua execução */
 	while(texto_processa_comandos(texto) == true) {
