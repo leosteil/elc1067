@@ -165,18 +165,15 @@ bool texto_processa_comandos(texto_t* txt)
 		/* muda estado na variável para editando */
 		estado = editando;
 	}
+	if(tecla >= ALLEGRO_KEY_A && tecla <= ALLEGRO_KEY_Z && estado == editando){
+		texto_insere_char(txt,tecla-61);
+	}
 
 	//implementar
 	/*if (tecla == ALLEGRO_KEY_BACKSPACE){
 		remove_char()...
 	}*/
 
-	/* teclas direcionais 
-		ALLEGRO_KEY_LEFT
-		ALLEGRO_KEY_RIGHT
-		ALLEGRO_KEY_UP
-		ALLEGRO_KEY_DOWN
-	*/
 	if( tecla == ALLEGRO_KEY_LEFT )
 		texto_move_esq(txt);
 	if( tecla == ALLEGRO_KEY_RIGHT )
@@ -203,7 +200,7 @@ void texto_move_esq(texto_t *txt)
 
 void texto_move_dir(texto_t *txt)
 {
-	if(txt->colcur <strlen(lista_busca(txt->linha,txt->lincur)->texto)){
+	if(txt->colcur <strlen(lista_busca(txt->linha,txt->lincur)->texto)-1){
 		txt->colcur++;
 	}
 }
@@ -222,27 +219,33 @@ void texto_move_cima(texto_t *txt)
 	}
 }
 
-/*Inicializa a estrutura apontada por txt com o conteúdo do arquivo chamado nome.
-Deve ler cada linha do arquivo, alocar memória suficiente para essa linha (sem
-o '\n' final e com um '\0'), copiar o conteúdo da linha para essa memória
-alocada e adicionar a memória alocada na lista duplamente encadeada de linha.
-A função deve ainda inicializar os demais campos da estrutura apontada por txt.*/
-
-/*void texto_le_arquivo(texto_t *txt, char *nome , FILE* arq){
-	int i,j;
-	char c;
-	txt->nome = nome;
-
-	arq = fopen("n.txt", "r");
-
-	if (arq == NULL) { // impede que seja lido, caso nao tenha nada no arquivo
-		printf("Erro ao abrir um dos arquivos."); return;
+void texto_insere_char(texto_t *txt, char c){
+	lista_t* aux = lista_busca(txt->linha->prim, txt->lincur);
+	int tam = strlen(aux->texto);
+	if(tam == 0){
+		aux->texto = memo_realoca(aux->texto, tam+sizeof(char));
+		aux->texto[0] = 'c';
+		aux->texto[1] = "\0";
+		txt->colcur++;
 	}
+	else{
+		aux->texto = memo_realoca(aux->texto, tam+sizeof(char));
 
-	while (c=fgetc(arqr) != EOF){ //enquanto n chegar no final do arquivo
-		c = fgetc(arq)
+		int i;
+		for(i = strlen(aux->texto); i>txt->colcur; i--)
+			aux->texto[i] = aux->texto[i-1];
+
+		aux->texto[i] = c;
+		txt->colcur++;
+		
+	}	
+}
+
+
+/*void texto_remove_char(texto_t *txt){
+	if(strlen(lista_busca(txt->linha)->texto, txt->lincur) == 0){
+
 	}
-
 }*/
 
 void texto_le_arquivo(texto_t *txt, char *nome, FILE* arq){
@@ -261,8 +264,10 @@ void texto_le_arquivo(texto_t *txt, char *nome, FILE* arq){
 			txt->linha = lista_insere(txt->linha, j);
 			continue;
 		}
+
+		int tam = strlen(lista_busca(txt->linha, j)->texto);
 		lista_busca(txt->linha, j)->texto[i] = c;
-		lista_busca(txt->linha, j)->texto = memo_realoca(lista_busca(txt->linha, j)->texto, strlen(lista_busca(txt->linha, j)->texto)+sizeof(char));
+		lista_busca(txt->linha, j)->texto = memo_realoca(lista_busca(txt->linha, j)->texto,tam+sizeof(char));
 		i++;
 	}
 

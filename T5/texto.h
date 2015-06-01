@@ -66,8 +66,8 @@ void texto_move_baixo(texto_t *txt);
 void texto_move_cima(texto_t *txt);
 
 void texto_insere_char(texto_t *txt, char c);
-
 void texto_remove_char(texto_t *txt);
+
 void texto_ajeita_tela(texto_t *txt);
 void texto_gruda_linha(texto_t *txt);
 void texto_quebra_linha(texto_t *txt);
